@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Random Minute Task Scheduler</title>
+  <!-- Digital-style font -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      background: #0d0d0d; /* deep black background */
+      color: #ffffff;      /* default text white */
+      padding: 40px;
+    }
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #ffffff;
+    }
+    #quote {
+      color: #00ff66; /* single green accent */
+      font-size: 1.1em;
+      margin-bottom: 30px;
+    }
+    #chosenMinute {
+      font-size: 1.5em;
+      margin: 20px 0;
+      color: #cccccc; /* subtle gray */
+    }
+    #countdown {
+      font-size: 3em;
+      margin: 20px 0;
+      color: #ffffff; /* main countdown in white */
+    }
+    button {
+      padding: 12px 25px;
+      margin: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Orbitron', sans-serif;
+      background: #222;
+      color: #fff;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #333;
+    }
+    #startBtn { display: inline-block; }
+    #confirmBtn, #stopBtn { display: none; }
+    footer {
+      margin-top: 40px;
+      font-size: 1em;
+      color: #888;
+    }
+    #clock {
+      margin-top: 15px;
+      font-size: 1.3em;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <h1>RETIREMENT COUNTDOWN</h1>
+  <div id="quote">“Stop but never quit”</div>
+
+  <button id="startBtn">Start</button>
+  <button id="confirmBtn">Confirm Task Completed</button>
+  <button id="stopBtn">Stop & Record Day</button>
+
+  <div id="chosenMinute"></div>
+  <div id="countdown"></div>
+
+  <footer>
+    <div id="clock"></div>
+  </footer>
+
+  <script>
+    let chosenMinute, countdownTimer, nextTargetTime, running = false;
+
+    const startBtn = document.getElementById("startBtn");
+    const confirmBtn = document.getElementById("confirmBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const chosenMinuteDisplay = document.getElementById("chosenMinute");
+    const countdownDisplay = document.getElementById("countdown");
+    const clockDisplay = document.getElementById("clock");
+
+    function startScheduler() {
+      // Random between 2–18 most of the time, sometimes up to 60
+      let roll = Math.random();
+      if (roll < 0.8) {
+        chosenMinute = Math.floor(Math.random() * 17) + 2; // 2–18
+      } else {
+        chosenMinute = Math.floor(Math.random() * 59) + 2; // 2–60
+      }
+
+      chosenMinuteDisplay.textContent = "Interval chosen: " + chosenMinute + " minutes";
+      startBtn.style.display = "none";
+      confirmBtn.style.display = "inline-block";
+      stopBtn.style.display = "inline-block";
+      running = true;
+      scheduleNext();
+    }
+
+    function scheduleNext() {
+      const now = new Date();
+      nextTargetTime = new Date(now.getTime() + chosenMinute * 60000);
+      updateCountdown();
+      countdownTimer = setInterval(updateCountdown, 1000);
+    }
+
+    function updateCountdown() {
+      if (!running) return;
+      const now = new Date();
+      const diff = nextTargetTime - now;
+      if (diff <= 0) {
+        clearInterval(countdownTimer);
+        alert("Time to execute your task!");
+        return;
+      }
+      const minutes = Math.floor(diff / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      countdownDisplay.textContent = `${minutes}m ${seconds}s`;
+    }
+
+    function confirmTask() {
+      clearInterval(countdownTimer);
+      if (running) scheduleNext(); // restart automatically
+    }
+
+    function stopScheduler() {
+      running = false;
+      clearInterval(countdownTimer);
+      countdownDisplay.textContent = "Session closed.";
+      confirmBtn.style.display = "none";
+      stopBtn.style.display = "none";
+    }
+
+    function updateClock() {
+      const now = new Date();
+      clockDisplay.textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+
+    startBtn.addEventListener("click", startScheduler);
+    confirmBtn.addEventListener("click", confirmTask);
+    stopBtn.addEventListener("click", stopScheduler);
+  </script>
+</body>
+</html>
+
