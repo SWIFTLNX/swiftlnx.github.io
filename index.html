@@ -87,17 +87,17 @@
     const chosenMinuteDisplay = document.getElementById("chosenMinute");
     const countdownDisplay = document.getElementById("countdown");
     const clockDisplay = document.getElementById("clock");
-
-    function startScheduler() {
-  // Random between 2–8 most of the time, sometimes up to 13
+    
+function startScheduler() {
+  // Random between 2–5 most of the time, sometimes up to 7
   let roll = Math.random();
   if (roll < 0.8) {
-    chosenMinute = Math.floor(Math.random() * 7) + 2; // 2–8
+    chosenMinute = Math.floor(Math.random() * 4) + 2; // 2–5
   } else {
-    chosenMinute = Math.floor(Math.random() * 12) + 2; // 2–13
+    chosenMinute = Math.floor(Math.random() * 6) + 2; // 2–7
   }
-      
 }
+
       chosenMinuteDisplay.textContent = "Interval chosen: " + chosenMinute + " minutes";
       startBtn.style.display = "none";
       confirmBtn.style.display = "inline-block";
