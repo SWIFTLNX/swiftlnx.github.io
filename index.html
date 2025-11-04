@@ -7,10 +7,15 @@
   <style>
     body {
       font-family: 'Orbitron', sans-serif;
-      text-align: center;
       background: #0d0d0d;
       color: #ffffff;
-      padding: 40px;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
     h1 {
       font-size: 2.2em;
@@ -52,12 +57,11 @@
     #startBtn { display: inline-block; }
     #confirmBtn, #stopBtn { display: none; }
     footer {
-      margin-top: 40px;
+      margin-top: 30px;
       font-size: 1em;
       color: #888;
     }
     #clock {
-      margin-top: 15px;
       font-size: 1.3em;
       color: #ffffff;
     }
@@ -88,12 +92,11 @@
     const clockDisplay = document.getElementById("clock");
 
     function startScheduler() {
-      // Random between 2–5 most of the time, sometimes up to 7
       let roll = Math.random();
       if (roll < 0.8) {
-        chosenMinute = Math.floor(Math.random() * 4) + 2; // 2–5
+        chosenMinute = Math.floor(Math.random() * 4) + 2;
       } else {
-        chosenMinute = Math.floor(Math.random() * 6) + 2; // 2–7
+        chosenMinute = Math.floor(Math.random() * 6) + 2;
       }
 
       chosenMinuteDisplay.textContent = "Interval chosen: " + chosenMinute + " minutes";
